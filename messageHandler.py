@@ -26,6 +26,10 @@ def sendSMS(msgString):
 #Message Recieving Web Hook. Created with Flask and accessed through ngrok.
 @app.route('/sms', methods = ['GET', 'POST'])
 def receiveSMS():
+    #Retrieve message info
+    senderNumber = request.form['From']
+    senderMessage = request.form['Body']
+    print(f'NUMBER: {senderNumber}, MESSAGE: {senderMessage}')
     resp = MessagingResponse()
     resp.message('BANANA')
     return str(resp)
