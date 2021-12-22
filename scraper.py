@@ -14,8 +14,25 @@ def checkStatus(CRN, subject):
 # Determines the existence of the given params. Checks if the URL with the given subject exists. If so, checks if the given CRN exists on that URL.
 # param CRN: the unique identifier for the course to check the existence of
 # param subject: the subject to check the existence of
+# return: True if the CRN exists, false if the URL exists but the CRN does not
+# raise: RequestException if the URL does not exist or there is a problem retrieving it
 def checkValidity(CRN, subject):
-    pass
+    try:
+        soup = scrape(createURL(subject))
+    except requests.exceptions.RequestException as e:
+        raise
+
+    table = soup.find("div", id = "results").table.tbody
+
+    index = 0
+    for cell in table.find_all('td'):
+        if index % 11 == 0:
+            if cell.text.strip() == CRN:
+                return True
+
+        index += 1
+
+    return False
 
 # Creates a url for a subject page on the WM Open Course List
 # param subject: the subject identifier to be inserted into the URL (Examples: CSCI, BIOL, THEA, etc)
@@ -28,7 +45,7 @@ def createURL(subject):
 # Attempts to scrape a web page.
 # param URL: the url to scrape
 # return: the html code of the web page
-# raise: exception if the URL doesn't exist or the request times out
+# raise: RequestException if the URL does not exist or there is a problem retrieving it
 def scrape(URL):
     try:
         source = requests.get(URL, timeout = 10.000)
@@ -44,6 +61,6 @@ def scrape(URL):
     return soup
 
 try:
-    print(scrape(createURL("CSCI")))
+    print(checkValidity("22612", "CSCI"))
 except requests.exceptions.RequestException as e:
     print("AHHH! An error")
