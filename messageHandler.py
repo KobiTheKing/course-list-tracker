@@ -39,5 +39,5 @@ def receiveSMS():
 #sendSMS(msgString)
 
 #Run the flask web hook
-#Use 'ngrok http 5000' in terminal to setup the ngrok tunnel 
+#Use 'ngrok http 5000' in terminal to setup the ngrok tunnel. Then copy https url into 'A message comes in' webhook.
 app.run(debug = True)
