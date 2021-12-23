@@ -2,6 +2,7 @@
     "CRNs": [
         {
             "crn": "12345",
+            "subject": "CSCI",
             "last_seen_status": "OPEN",
             "tracked_by": [
                 5556667777,
@@ -10,6 +11,7 @@
         },
         {
             "crn": "11111",
+            "subject": "BIOL",
             "last_seen_status": "CLOSED",
             "tracked_by": [
                 5556667777
