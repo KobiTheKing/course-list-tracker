@@ -1,0 +1,19 @@
+{
+    "CRNs": [
+        {
+            "crn": "12345",
+            "last_seen_status": "OPEN",
+            "tracked_by": [
+                5556667777,
+                1112223333
+            ]
+        },
+        {
+            "crn": "11111",
+            "last_seen_status": "CLOSED",
+            "tracked_by": [
+                5556667777
+            ]
+        }
+    ]
+}
