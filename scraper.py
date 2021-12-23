@@ -8,8 +8,31 @@ BASE_URL = "https://courselist.wm.edu/courselist/courseinfo/searchresults?term_c
 # Scrapes the page for the given subject, finds the row (in table) with the given CRN and returns its status (open OR closed).
 # param CRN: the unique identifier for the course in the given subject
 # param subject: the subject to check for the course in
+# return: True if open, false if closed
+# raise: RequestException if the URL does not exist or there is a problem retrieving it OR the CRN cannot be found
 def checkStatus(CRN, subject):
-    pass
+    try:
+        soup = scrape(createURL(subject))
+    except requests.exceptions.RequestException as e:
+        raise
+
+    # Retrieves all of the cells in the table as a list
+    # TODO getting the rows would be more intuitive but not sure how to
+    table = soup.find("div", id = "results").table.tbody
+    cells = table.find_all('td')
+
+    for index, cell in enumerate(cells):
+        # If the cell being looked at contains a CRN
+        if index % 11 == 0:
+            if cell.text.strip() == CRN:
+                # Checks the cell that contains the status for this specific CRN
+                if cells[index + 10].text.strip() == "OPEN":
+                    return True
+                elif cells[index + 10].text.strip() == "CLOSED":
+                    return False
+    
+    # If we go through entire loop and can't find the CRN
+    raise RequestException
 
 # Determines the existence of the given params. Checks if the URL with the given subject exists. If so, checks if the given CRN exists on that URL.
 # param CRN: the unique identifier for the course to check the existence of
@@ -61,6 +84,6 @@ def scrape(URL):
     return soup
 
 try:
-    print(checkValidity("22612", "CSCI"))
+    print(checkStatus("22612", "CSCI"))
 except requests.exceptions.RequestException as e:
     print("AHHH! An error")
