@@ -1,19 +1,5 @@
 import json
 
-with open("example.json", "r") as f:
-    data = json.load(f)
-
-for crn in data["CRNs"]:
-    if crn["last_seen_status"] == "OPEN":
-        crn["last_seen_status"] = "CLOSED"
-    else:
-        crn["last_seen_status"] = "OPEN"
-
-with open("example.json", "w") as f:
-    json.dump(data, f, indent = 4)
-
-
-
 # Retrieves info from tracking.json
 # return: The json data converted into python objects
 def getData():
@@ -32,7 +18,25 @@ def updateData(data):
 # param subject: the subject of the course
 # param phoneNum: the phone number of the user requesting to track the course
 def trackCourse(CRN, subject, phoneNum):
-    pass
+    trackingData = getData()
+    
+    for course in trackingData["Courses"]:
+        if course["crn"] == CRN:
+            course["tracked_by"].append(phoneNum)
+            updateData(trackingData)
+            return
+
+    # If the course is not yet being tracked by anyone
+    newEntry = {
+        "crn": CRN,
+        "subject": subject,
+        "last_seen_status": "NONE",
+        "tracked_by": [phoneNum]
+    }
+    trackingData["Courses"].append(newEntry)
+    updateData(trackingData)
+
+
 
 # Called via the sms command 'untrack <CRN>'. Removes a phone number from the 'tracked_by' list for a course. If they were the only person tracking said course, then
 # the entire course is removed.
@@ -40,3 +44,7 @@ def trackCourse(CRN, subject, phoneNum):
 # param phoneNum: the phone number of the user requesting to track the course
 def untrackCourse(CRN, phoneNum):
     pass
+
+
+# Testing
+trackCourse("20854", "FREN", "4349810169")
