@@ -1,12 +1,12 @@
 {
-    "CRNs": [
+    "Courses": [
         {
             "crn": "12345",
             "subject": "CSCI",
             "last_seen_status": "OPEN",
             "tracked_by": [
-                5556667777,
-                1112223333
+                "5556667777",
+                "1112223333"
             ]
         },
         {
@@ -14,7 +14,15 @@
             "subject": "BIOL",
             "last_seen_status": "CLOSED",
             "tracked_by": [
-                5556667777
+                "5556667777"
+            ]
+        },
+        {
+            "crn": "22222",
+            "subject": "FREN",
+            "last_seen_status": "NONE",
+            "tracked_by": [
+                "5556667777"
             ]
         }
     ]

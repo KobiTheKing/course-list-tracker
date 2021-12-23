@@ -1,2 +1,3 @@
 course_list_tracker_env/
 .env
+tracking.json
