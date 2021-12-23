@@ -46,14 +46,12 @@ def checkValidity(CRN, subject):
         raise
 
     table = soup.find("div", id = "results").table.tbody
+    cells = table.find_all('td')
 
-    index = 0
-    for cell in table.find_all('td'):
+    for index, cell in enumerate(cells):
         if index % 11 == 0:
             if cell.text.strip() == CRN:
                 return True
-
-        index += 1
 
     return False
 
