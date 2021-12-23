@@ -33,6 +33,7 @@ def trackCourse(CRN, subject, phoneNum):
         "last_seen_status": "NONE",
         "tracked_by": [phoneNum]
     }
+
     trackingData["Courses"].append(newEntry)
     updateData(trackingData)
 
@@ -42,9 +43,26 @@ def trackCourse(CRN, subject, phoneNum):
 # the entire course is removed.
 # param CRN: the unique identifier for the course
 # param phoneNum: the phone number of the user requesting to track the course
+# return: True for success, false if one of the arguments is invalid
 def untrackCourse(CRN, phoneNum):
-    pass
+    trackingData = getData()
+
+    for course in trackingData["Courses"]:
+        if course["crn"] == CRN:
+            if len(course["tracked_by"]) == 1 and course["tracked_by"][0] == phoneNum:
+                # If the course is only being tracked by one person and it is the person specified by the phoneNum argument, delete the whole course.
+                trackingData["Courses"].remove(course)
+                updateData(trackingData)
+                return True
+            elif phoneNum in course["tracked_by"]:
+                # If other people also track the course, only delete the specified number from the list of people tracking
+                course["tracked_by"].remove(phoneNum)
+                updateData(trackingData)
+                return True
+
+    return False
 
 
 # Testing
-trackCourse("20854", "FREN", "4349810169")
+#trackCourse("20854", "FREN", "4349810169")
+print(untrackCourse("20854", "1112223333"))
