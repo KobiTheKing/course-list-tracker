@@ -45,14 +45,18 @@ def checkValidity(CRN, subject):
     except requests.exceptions.RequestException as e:
         raise
 
+    # Retrieves all of the cells in the table as a list
+    # TODO getting the rows would be more intuitive but not sure how to
     table = soup.find("div", id = "results").table.tbody
     cells = table.find_all('td')
 
     for index, cell in enumerate(cells):
+        # If the cell being looked at contains a CRN
         if index % 11 == 0:
             if cell.text.strip() == CRN:
                 return True
 
+    # If we go through entire loop and can't find the CRN
     return False
 
 # Creates a url for a subject page on the WM Open Course List
