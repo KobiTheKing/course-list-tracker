@@ -5,8 +5,8 @@
             "subject": "CSCI",
             "last_seen_status": "OPEN",
             "tracked_by": [
-                "5556667777",
-                "1112223333"
+                "+15556667777",
+                "+11112223333"
             ]
         },
         {
@@ -14,7 +14,7 @@
             "subject": "BIOL",
             "last_seen_status": "CLOSED",
             "tracked_by": [
-                "5556667777"
+                "+15556667777"
             ]
         },
         {
@@ -22,7 +22,7 @@
             "subject": "FREN",
             "last_seen_status": "NONE",
             "tracked_by": [
-                "5556667777"
+                "+15556667777"
             ]
         }
     ]

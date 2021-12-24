@@ -37,7 +37,7 @@ def checkStatus(CRN, subject):
 # Determines the existence of the given params. Checks if the URL with the given subject exists. If so, checks if the given CRN exists on that URL.
 # param CRN: the unique identifier for the course to check the existence of
 # param subject: the subject to check the existence of
-# return: True if the CRN exists, false if the URL exists but the CRN does not
+# return: True if the CRN and URL exist, false if the URL exists but the CRN does not
 # raise: RequestException if the URL does not exist or there is a problem retrieving it
 def checkValidity(CRN, subject):
     try:
@@ -85,7 +85,7 @@ def scrape(URL):
 
     return soup
 
-try:
-    print(checkStatus("22612", "CSCI"))
-except requests.exceptions.RequestException as e:
-    print("AHHH! An error")
+#try:
+#    print(checkStatus("22612", "CSCI"))
+#except requests.exceptions.RequestException as e:
+#    print("AHHH! An error")

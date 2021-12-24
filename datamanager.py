@@ -37,8 +37,6 @@ def trackCourse(CRN, subject, phoneNum):
     trackingData["Courses"].append(newEntry)
     updateData(trackingData)
 
-
-
 # Called via the sms command 'untrack <CRN>'. Removes a phone number from the 'tracked_by' list for a course. If they were the only person tracking said course, then
 # the entire course is removed.
 # param CRN: the unique identifier for the course
