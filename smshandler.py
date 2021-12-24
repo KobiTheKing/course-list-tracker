@@ -24,7 +24,7 @@ app = Flask(__name__)
 def setup():
     # Run the flask web hook
     # Use 'ngrok http 5000' in terminal to setup the ngrok tunnel. Then copy https url into 'A message comes in' webhook.
-    app.run(debug = True)
+    app.run(debug = False)
 
 # Sends a text message
 # param phoneNums: a list of numbers to send the message to
