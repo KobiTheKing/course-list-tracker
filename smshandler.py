@@ -2,20 +2,29 @@ from twilio.rest import Client
 from twilio.twiml.messaging_response import MessagingResponse
 from flask import Flask, request, redirect
 from dotenv import load_dotenv
+from datamanager import trackCourse, untrackCourse
 import os
 
-#Puts the environment variables from .env into os.environ
+
+
+# Puts the environment variables from .env into os.environ
 load_dotenv()
 
-#Setup the client for sending messages
+# Setup the client for sending messages
 accountSID = os.environ.get('ACCOUNT_SID')
 authToken = os.environ.get('AUTH_TOKEN')
 client = Client(accountSID, authToken)
 
-#Create flask app
+# Create flask app
 app = Flask(__name__)
 
-#Sends a test message
+# Sets up the Twilio sms connection and the flask web hook
+def setup():
+    # Run the flask web hook
+    # Use 'ngrok http 5000' in terminal to setup the ngrok tunnel. Then copy https url into 'A message comes in' webhook.
+    app.run(debug = True)
+
+# Sends a test message
 def sendSMS(msgString):
     message = client.messages.create(
         to = os.environ.get('PERSONAL_PHONE'),
@@ -23,10 +32,10 @@ def sendSMS(msgString):
         body = msgString
     )
 
-#Message Recieving Web Hook. Created with Flask and accessed through ngrok.
+# Message Recieving Web Hook. Created with Flask and accessed through ngrok.
 @app.route('/sms', methods = ['GET', 'POST'])
 def receiveSMS():
-    #Retrieve message info
+    # Retrieve message info
     senderNumber = request.form['From']
     senderMessage = request.form['Body']
     print(f'NUMBER: {senderNumber}, MESSAGE: {senderMessage}')
@@ -37,7 +46,3 @@ def receiveSMS():
 
 #msgString = 'Hello!'
 #sendSMS(msgString)
-
-#Run the flask web hook
-#Use 'ngrok http 5000' in terminal to setup the ngrok tunnel. Then copy https url into 'A message comes in' webhook.
-app.run(debug = True)

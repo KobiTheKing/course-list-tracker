@@ -62,7 +62,7 @@ def untrackCourse(CRN, phoneNum):
 
     return False
 
-
+#print("THIS IS A TEST")
 # Testing
 #trackCourse("20854", "FREN", "4349810169")
-print(untrackCourse("20854", "1112223333"))
+#print(untrackCourse("20854", "1112223333"))
