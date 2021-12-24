@@ -1,3 +1,4 @@
 course_list_tracker_env/
 .env
 tracking.json
+__pycache__/
