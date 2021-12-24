@@ -27,16 +27,17 @@ def setup():
     app.run(debug = True)
 
 # Sends a text message
-# param phoneNum: the number to send the message to
+# param phoneNums: a list of numbers to send the message to
 # param msgString: the contents of the message
-def sendSMS(phoneNum, msgString):
-    message = client.messages.create(
-        to = phoneNum,
-        from_ = os.environ.get("TWILIO_PHONE"),
-        body = msgString
-    )
+def sendSMS(phoneNums, msgString):
+    for phoneNum in phoneNums:
+        message = client.messages.create(
+            to = phoneNum,
+            from_ = os.environ.get("TWILIO_PHONE"),
+            body = msgString
+        )
 
-    print(f"Sent Outbound Message: NUMBER: {phoneNum}, MESSAGE: {msgString}")
+        print(f"Sent Outbound Message: NUMBER: {phoneNum}, MESSAGE: {msgString}")
 
 # Message Recieving Web Hook. Created with Flask and accessed through ngrok.
 @app.route("/sms", methods = ["GET", "POST"])
