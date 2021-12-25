@@ -10,6 +10,8 @@ tracking = False
 # The function is handled on a thread separate from the main thread to not interfere with the sms handling.
 def track():
     while tracking:
+        print("tracker: Start of tracking loop...")
+
         trackingData = getData()
 
         for course in trackingData["Courses"]:
@@ -30,5 +32,5 @@ def track():
                 print(f"Error (tracker.py): Failed to check status of {course}.")
 
         updateData(trackingData)
-        print("End of tracking loop...")
         time.sleep(30)
+        print("tracker: End of tracking loop...")

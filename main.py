@@ -1,14 +1,19 @@
 import smshandler
 import tracker
 import threading
+import datamanager
 
 # Used to setup the program
 def main():
-    #smsThread = threading.Thread(target = smshandler.setup)
+    lock = threading.Lock()
+    datamanager.setLock(lock)
+
     tracker.tracking = True
     trackerThread = threading.Thread(target = tracker.track)
     trackerThread.start()
-    smshandler.setup()
+
+    smsThread = threading.Thread(target = smshandler.setup)
+    smsThread.start()
 
 
 if __name__ == "__main__":
