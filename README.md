@@ -4,5 +4,5 @@ This program web scrapes William and Mary's Open Course List Website (https://co
 
 ## SMS Commands
 
-- Track a new course: 'track <CRN> <subject>'
-- Untrack a course: 'untrack <CRN>'
+- Track a new course: 'track {CRN} {subject}'
+- Untrack a course: 'untrack {CRN}'
