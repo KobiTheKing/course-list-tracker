@@ -21,7 +21,19 @@ bot = lightbulb.BotApp(
 # Define command's type
 @lightbulb.implements(lightbulb.SlashCommand)
 async def ping(ctx: lightbulb.Context) -> None:
+    test(ctx)
     await ctx.respond(f"Pong! Latency: {bot.heartbeat_latency*1000:.2f}ms")
+
+def test(ctx: lightbulb.Context):
+    print(ctx.app)
+    print(ctx.author)
+    print(ctx.bot)
+    print(ctx.channel_id)
+    print(ctx.command)
+    print(ctx.event)
+    print(ctx.member)
+    print(ctx.user)
+
 
 if __name__ == "__main__":
     bot.run()

@@ -30,7 +30,6 @@ def updateData(data):
 # param phoneNum: the phone number of the user requesting to track the course
 def trackCourse(CRN, subject, phoneNum):
     trackingData = getData()
-    print("test")
     
     for course in trackingData["Courses"]:
         if course["crn"] == CRN:
