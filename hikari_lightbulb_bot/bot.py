@@ -21,7 +21,6 @@ bot = lightbulb.BotApp(
 # Define command's type
 @lightbulb.implements(lightbulb.SlashCommand)
 async def ping(ctx: lightbulb.Context) -> None:
-    #test(ctx)
     await ctx.respond(f"Pong! Latency: {bot.heartbeat_latency*1000:.2f}ms")
 
 # Command to clear all the messages in a channel
@@ -31,20 +30,23 @@ async def ping(ctx: lightbulb.Context) -> None:
 async def clear(ctx: lightbulb.Context) -> None:
     channel = ctx.get_channel()
 
-    if channel.name == "bot-commands" and channel.type == hikari.ChannelType.GUILD_TEXT:
-        hikari.GuildTextChannel(channel).delete_messages()
+    #if channel.name == "bot-commands" and channel.type == hikari.ChannelType.GUILD_TEXT:
+    #    hikari.GuildTextChannel(channel).delete_messages()
 
     await ctx.respond("Channel contents cleared.")
 
-def test(ctx: lightbulb.Context):
-    print(ctx.app)
-    print(ctx.author)
-    print(ctx.bot)
-    print(ctx.channel_id)
-    print(ctx.command)
-    print(ctx.event)
-    print(ctx.member)
-    print(ctx.user)
+#
+#   Events
+#
+
+@bot.listen()
+async def directMessageCreate(event: hikari.DMMessageCreateEvent) -> None:
+    print(event.author)
+    print(event.channel_id)
+    print(event.content)
+    print(event.is_human)
+    print(event.message)
+
 
 
 if __name__ == "__main__":
