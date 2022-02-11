@@ -8,7 +8,7 @@ def setLock(lock):
 # Retrieves info from tracking.json
 # return: The json data converted into python objects
 def getData():
-    threadLock.acquire()
+    #threadLock.acquire()
     print("datamanager: Locking JSON data.")
 
     with open("tracking.json", "r") as f:
@@ -20,20 +20,20 @@ def updateData(data):
     with open("tracking.json", "w") as f:
         json.dump(data, f, indent = 4)
 
-    threadLock.release()
+    #threadLock.release()
     print("datamanager: Unlocking JSON data.")
 
 # Called via the sms command 'track <CRN> <subject>'. Adds phone number to the 'tracked_by' list for a course if someone else is already tracking it or
 # adds the course to the list if they are the first person to track it.
 # param CRN: the unique identifier for the course
 # param subject: the subject of the course
-# param phoneNum: the phone number of the user requesting to track the course
-def trackCourse(CRN, subject, phoneNum):
+# param identification: identification of the user requesting to track the course
+def trackCourse(CRN, subject, identification):
     trackingData = getData()
     
     for course in trackingData["Courses"]:
         if course["crn"] == CRN:
-            course["tracked_by"].append(phoneNum)
+            course["tracked_by"].append(identification)
             updateData(trackingData)
             return
 
@@ -42,7 +42,7 @@ def trackCourse(CRN, subject, phoneNum):
         "crn": CRN,
         "subject": subject,
         "last_seen_status": "NONE",
-        "tracked_by": [phoneNum]
+        "tracked_by": [identification]
     }
 
     trackingData["Courses"].append(newEntry)
@@ -51,27 +51,22 @@ def trackCourse(CRN, subject, phoneNum):
 # Called via the sms command 'untrack <CRN>'. Removes a phone number from the 'tracked_by' list for a course. If they were the only person tracking said course, then
 # the entire course is removed.
 # param CRN: the unique identifier for the course
-# param phoneNum: the phone number of the user requesting to track the course
+# param identification: identification of the user requesting to track the course
 # return: True for success, false if one of the arguments is invalid
-def untrackCourse(CRN, phoneNum):
+def untrackCourse(CRN, identification):
     trackingData = getData()
 
     for course in trackingData["Courses"]:
         if course["crn"] == CRN:
-            if len(course["tracked_by"]) == 1 and course["tracked_by"][0] == phoneNum:
+            if len(course["tracked_by"]) == 1 and course["tracked_by"][0] == identification:
                 # If the course is only being tracked by one person and it is the person specified by the phoneNum argument, delete the whole course.
                 trackingData["Courses"].remove(course)
                 updateData(trackingData)
                 return True
-            elif phoneNum in course["tracked_by"]:
+            elif identification in course["tracked_by"]:
                 # If other people also track the course, only delete the specified number from the list of people tracking
-                course["tracked_by"].remove(phoneNum)
+                course["tracked_by"].remove(identification)
                 updateData(trackingData)
                 return True
 
     return False
-
-#print("THIS IS A TEST")
-# Testing
-#trackCourse("20854", "FREN", "4349810169")
-#print(untrackCourse("20854", "1112223333"))
