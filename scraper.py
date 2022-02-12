@@ -84,8 +84,3 @@ def scrape(URL):
         raise RequestException
 
     return soup
-
-#try:
-#    print(checkStatus("22612", "CSCI"))
-#except requests.exceptions.RequestException as e:
-#    print("AHHH! An error")

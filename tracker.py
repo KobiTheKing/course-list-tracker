@@ -10,7 +10,6 @@ tracking = False
 # Checks for course status changes on an infinite loop with some pause time inbetween each iteration.
 # The function is handled on a thread separate from the main thread to not interfere with the sms handling.
 async def track():
-    print("TEST2")
     while tracking:
         print("tracker: Start of tracking loop...")
 
@@ -36,5 +35,4 @@ async def track():
         updateData(trackingData)
 
         print("tracker: End of tracking loop...")
-        #yield
         await asyncio.sleep(15)

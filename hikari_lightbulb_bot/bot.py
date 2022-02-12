@@ -2,7 +2,7 @@ import os
 import dotenv
 import hikari
 import lightbulb
-from tracker import track
+import tracker
 from scraper import checkValidity
 from datamanager import trackCourse, untrackCourse
 import asyncio
@@ -26,7 +26,8 @@ def setup():
 # Starts the course tracker as a background task
 @bot.listen()
 async def StartTracker(event: hikari.StartedEvent) -> None:
-    asyncio.create_task(track())
+    tracker.tracking = True
+    asyncio.create_task(tracker.track())
 
 # Register command to bot
 @bot.command

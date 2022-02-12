@@ -1,16 +1,8 @@
 import json
-import threading
-
-def setLock(lock):
-    global threadLock
-    threadLock = lock
 
 # Retrieves info from tracking.json
 # return: The json data converted into python objects
 def getData():
-    #threadLock.acquire()
-    print("datamanager: Locking JSON data.")
-
     with open("tracking.json", "r") as f:
         return json.load(f)
 
@@ -19,9 +11,6 @@ def getData():
 def updateData(data):
     with open("tracking.json", "w") as f:
         json.dump(data, f, indent = 4)
-
-    #threadLock.release()
-    print("datamanager: Unlocking JSON data.")
 
 # Called via the sms command 'track <CRN> <subject>'. Adds phone number to the 'tracked_by' list for a course if someone else is already tracking it or
 # adds the course to the list if they are the first person to track it.
