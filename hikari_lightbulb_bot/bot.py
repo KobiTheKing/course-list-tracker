@@ -13,7 +13,7 @@ dotenv.load_dotenv()
 bot = lightbulb.BotApp(
     os.environ["DISCORD_BOT_TOKEN"],
     intents = hikari.Intents.ALL,
-    default_enabled_guilds = (833429143672717315),
+    #default_enabled_guilds = (833429143672717315),     # commenting this out makes slash commands available in DMs
     logs = "INFO"
 )
 
@@ -37,8 +37,6 @@ async def StartTracker(event: hikari.StartedEvent) -> None:
 @lightbulb.implements(lightbulb.SlashCommand)
 async def ping(ctx: lightbulb.Context) -> None:
     await ctx.respond(f"Pong! Latency: {bot.heartbeat_latency*1000:.2f}ms")
-    #print("TEST")
-    #tracker.track()
 
 # Command to clear all the messages in a channel
 @bot.command
@@ -65,7 +63,7 @@ async def sendDM(ids, msgString):
         except Exception as e:
             print(f"ERROR: Failed to send outbound DM with exception: {e}")
 
-# Recieves a direct message from a user of the bot
+# Recieves a direct message from a user of the bot and parses to identify commands
 @bot.listen()
 async def recieveDM(event: hikari.DMMessageCreateEvent) -> None:
     if event.is_bot:
