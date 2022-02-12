@@ -2,6 +2,7 @@ import os
 import dotenv
 import hikari
 import lightbulb
+from hikari_lightbulb_bot.commands.customhelp import CustomHelpCommand
 import tracker
 from scraper import checkValidity
 from datamanager import trackCourse, untrackCourse
@@ -13,13 +14,15 @@ dotenv.load_dotenv()
 bot = lightbulb.BotApp(
     os.environ["DISCORD_BOT_TOKEN"],
     intents = hikari.Intents.ALL,
-    #default_enabled_guilds = (833429143672717315),     # commenting this out makes slash commands available in DMs
+    default_enabled_guilds = (833429143672717315),     # commenting this out makes slash commands available in DMs
+    help_class = CustomHelpCommand,
     logs = "INFO"
 )
 
 # Starts the bot
 def setup():
-    bot.load_extensions("hikari_lightbulb_bot.commands.starttracking")
+    #bot.load_extensions_from("hikari_lightbulb_bot.commands")
+    bot.load_extensions("hikari_lightbulb_bot.commands.starttracking", "hikari_lightbulb_bot.commands.customhelp")
     bot.run()
 
 # Called once the bot has started
