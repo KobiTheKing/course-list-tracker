@@ -42,18 +42,6 @@ async def StartTracker(event: hikari.StartedEvent) -> None:
 async def ping(ctx: lightbulb.Context) -> None:
     await ctx.respond(f"Pong! Latency: {bot.heartbeat_latency*1000:.2f}ms")
 
-# Command to clear all the messages in a channel
-@bot.command
-@lightbulb.command("clear", description = "Clears the message history in the current channel.")
-@lightbulb.implements(lightbulb.SlashCommand)
-async def clear(ctx: lightbulb.Context) -> None:
-    channel = ctx.get_channel()
-
-    #if channel.name == "bot-commands" and channel.type == hikari.ChannelType.GUILD_TEXT:
-    #    hikari.GuildTextChannel(channel).delete_messages()
-
-    await ctx.respond("Channel contents cleared.")
-
 # Sends a direct message to user(s).
 # param ids: a list of user ids to send the message to
 # param msgString: the contents of the message
