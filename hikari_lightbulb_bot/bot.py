@@ -23,6 +23,7 @@ bot = lightbulb.BotApp(
 def setup():
     #bot.load_extensions_from("hikari_lightbulb_bot.commands")
     bot.load_extensions("hikari_lightbulb_bot.commands.starttracking", "hikari_lightbulb_bot.commands.customhelp")
+    #bot.load_extensions("hikari_lightbulb_bot.commands.starttracking")
     bot.run()
 
 # Called once the bot has started

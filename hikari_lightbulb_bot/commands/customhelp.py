@@ -1,4 +1,5 @@
 import lightbulb
+import hikari_lightbulb_bot.bot
 
 # Plugins are structures that allow the grouping of multiple commands and listeners together.
 #plugin = lightbulb.Plugin("CustomHelpPlugin")
@@ -32,6 +33,12 @@ class CustomHelpCommand(lightbulb.BaseHelpCommand):
         # Override this method to change the message sent when help is
         # requested for an object that does not exist
         pass
+
+#@plugin.command
+#@lightbulb.command("help", description = "Get bot command info.")
+#@lightbulb.implements(CustomHelpCommand)
+#async def startTracking(ctx: lightbulb.Context) -> None:
+#    await ctx.respond("hello?")
 
 # Extensions are hot-reloadable (can be loaded/unloaded while the bot is live)
 
