@@ -2,9 +2,9 @@ import os
 import dotenv
 import hikari
 import lightbulb
-import course_tracker.tracker as tracker
-from course_tracker.scraper import checkValidity
-from course_tracker.datamanager import trackCourse, untrackCourse
+from course_tracker import tracker
+from course_tracker import scraper
+from course_tracker import datamanager
 import asyncio
 
 dotenv.load_dotenv()    # Load environment variables
@@ -83,9 +83,9 @@ async def recieveDM(event: hikari.DMMessageCreateEvent) -> None:
             print("sendername" + str(senderName))
 
             try:
-                if checkValidity(CRN, subject):
+                if scraper.checkValidity(CRN, subject):
                     # Both CRN and subject are good
-                    trackCourse(CRN, subject, str(senderID))
+                    datamanager.trackCourse(CRN, subject, str(senderID))
                     await senderName.send(content = f"Success: Course with CRN: {CRN}, subject: {subject} now being tracked.")
                     return
                 else:
@@ -100,7 +100,7 @@ async def recieveDM(event: hikari.DMMessageCreateEvent) -> None:
             # Command: 'untrack <CRN>'
             CRN = senderMessage.split()[1]
 
-            if untrackCourse(CRN, str(senderID)):
+            if datamanager.untrackCourse(CRN, str(senderID)):
                 await senderName.send(content = f"Success: Course with CRN: {CRN} no longer being tracked.")
                 return
             else:

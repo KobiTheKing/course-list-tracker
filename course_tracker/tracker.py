@@ -1,6 +1,6 @@
-from datamanager import getData, updateData
-from scraper import checkStatus
-import hikari_lightbulb_bot.bot as bot
+from course_tracker import datamanager
+from course_tracker import scraper
+from course_tracker.hikari_lightbulb_bot import bot
 import asyncio
 
 # Controls the while loop that keeps the tracker running continuously
@@ -11,11 +11,11 @@ async def track() -> None:
     while tracking:
         print("tracker: Start of tracking loop...")
 
-        trackingData = getData()
+        trackingData = datamanager.getData()
 
         for course in trackingData["Courses"]:
             try:
-                status = checkStatus(course["crn"], course["subject"])
+                status = scraper.checkStatus(course["crn"], course["subject"])
 
                 # Situations where users tracking the course should be notified (a change in status)
                 if not status and course["last_seen_status"] == "OPEN":
@@ -30,7 +30,7 @@ async def track() -> None:
             except Exception as e:
                 print(f"Error (tracker.py): Failed to check status of {course}.")
 
-        updateData(trackingData)
+        datamanager.updateData(trackingData)
 
         print("tracker: End of tracking loop...")
         await asyncio.sleep(15)
