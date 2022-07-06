@@ -2,11 +2,11 @@ import lightbulb
 import hikari
 
 # Plugins are structures that allow the grouping of multiple commands and listeners together.
-plugin = lightbulb.Plugin("StartTrackingPlugin")
+plugin = lightbulb.Plugin("Start Tracking", description="Recieve a DM from the bot to begin tracking courses.")
 
 # Creates a command in the plugin
 @plugin.command
-@lightbulb.command("starttracking", description="Recieve a DM from the bot to begin tracking courses.")
+@lightbulb.command("starttracking", description="Starts up a DM page between yourself and the bot.")
 @lightbulb.implements(lightbulb.SlashCommand)
 async def startTracking(ctx: lightbulb.Context) -> None:
     embed = (
