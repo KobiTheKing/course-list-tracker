@@ -5,7 +5,7 @@ plugin = lightbulb.Plugin("StartTrackingPlugin")
 
 # Creates a command in the plugin
 @plugin.command
-@lightbulb.command("starttracking", description = "TEMP DESCRIPTION")
+@lightbulb.command("starttracking", description = "Recieve a DM from the bot to begin tracking courses.")
 @lightbulb.implements(lightbulb.SlashCommand)
 async def startTracking(ctx: lightbulb.Context) -> None:
     await ctx.user.send(content = "Test message!")
