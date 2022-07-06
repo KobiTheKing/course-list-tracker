@@ -15,8 +15,8 @@ async def startTracking(ctx: lightbulb.Context) -> None:
 
 # Extensions are hot-reloadable (can be loaded/unloaded while the bot is live)
 
-def load(bot) -> None:
+def load(bot):
     bot.add_plugin(plugin)
 
-def unload(bot) -> None:
+def unload(bot):
     bot.remove_plugin(plugin)
