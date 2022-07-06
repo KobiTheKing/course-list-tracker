@@ -2,9 +2,9 @@ import os
 import dotenv
 import hikari
 import lightbulb
-import tracker
-from scraper import checkValidity
-from datamanager import trackCourse, untrackCourse
+import course_tracker.tracker as tracker
+from course_tracker.scraper import checkValidity
+from course_tracker.datamanager import trackCourse, untrackCourse
 import asyncio
 
 dotenv.load_dotenv()    # Load environment variables
@@ -14,13 +14,13 @@ bot = lightbulb.BotApp(
     os.environ["DISCORD_BOT_TOKEN"],
     intents=hikari.Intents.ALL,
     default_enabled_guilds=(833429143672717315, 914263704978219109),     # commenting this out makes slash commands available in DMs, uncommenting this is useful for testing since it instantly loads slash commands to the listed servers
-    help_slash_command=True,
-    logs="INFO"
+    help_class=None,
+    logs="INFO"    #DEBUG
 )
 
 # Starts the bot.
 def setup() -> None:
-    bot.load_extensions("hikari_lightbulb_bot.commands.starttracking")
+    bot.load_extensions("hikari_lightbulb_bot.commands.customhelp", "hikari_lightbulb_bot.commands.track")
     bot.run()
 
 # Called once the bot has started.
