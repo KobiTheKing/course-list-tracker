@@ -29,9 +29,14 @@ def setup() -> None:
 # Called once the bot has started.
 # Starts the course tracker as a background task.
 @bot.listen()
-async def StartTracker(event: hikari.StartedEvent) -> None:
+async def startTracker(event: hikari.StartedEvent) -> None:
     tracker.tracking = True
     asyncio.create_task(tracker.track())
+
+# Called once the bot has disconnected from Discord.
+@bot.listen()
+async def botDisconnected(event: hikari.StoppedEvent) -> None:
+    print("The bot has disconnected from Discord!")
 
 # Register command to bot
 @bot.command
