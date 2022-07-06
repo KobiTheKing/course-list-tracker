@@ -2,7 +2,7 @@ import lightbulb
 import hikari_lightbulb_bot.bot
 
 # Plugins are structures that allow the grouping of multiple commands and listeners together.
-#plugin = lightbulb.Plugin("CustomHelpPlugin")
+plugin = lightbulb.Plugin("CustomHelpPlugin")
 
 #@plugin.command
 #@lightbulb.command("help", description = "Get bot command info.")
@@ -12,27 +12,31 @@ class CustomHelpCommand(lightbulb.BaseHelpCommand):
     # Sends an overall help message for the bot. This is called when no object is provided when the help command is invoked.
     async def send_bot_help(self, context):
         print("?")
-        await context.respond("Test")
+        #await context.respond("Test")
 
     async def send_plugin_help(self, context, plugin):
         # Override this method to change the message sent when the help command
         # argument is the name of a plugin.
-        pass
+        print("?")
+        #await context.respond("Test")
 
     async def send_command_help(self, context, command):
         # Override this method to change the message sent when the help command
         # argument is the name or alias of a command.
-        pass
+        print("?")
+        #await context.respond("Test")
 
     async def send_group_help(self, context, group):
         # Override this method to change the message sent when the help command
         # argument is the name or alias of a command group.
-        pass
+        print("?")
+        #await context.respond("Test")
 
     async def object_not_found(self, context, obj):
         # Override this method to change the message sent when help is
         # requested for an object that does not exist
-        pass
+        print("?")
+        #await context.respond("Test")
 
 #@plugin.command
 #@lightbulb.command("help", description = "Get bot command info.")
@@ -45,9 +49,9 @@ class CustomHelpCommand(lightbulb.BaseHelpCommand):
 def load(bot):
     bot.d.old_help_command = bot.help_command
     bot.help_command = CustomHelpCommand(bot)
-    #bot.add_plugin(plugin)
+    bot.add_plugin(plugin)
 
 def unload(bot):
     bot.help_command = bot.d.old_help_command
     del bot.d.old_help_command
-    #bot.remove_plugin(plugin)
+    bot.remove_plugin(plugin)
