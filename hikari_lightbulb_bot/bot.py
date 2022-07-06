@@ -14,16 +14,16 @@ dotenv.load_dotenv()    # Load environment variables
 bot = lightbulb.BotApp(
     os.environ["DISCORD_BOT_TOKEN"],
     intents = hikari.Intents.ALL,
-    default_enabled_guilds = (833429143672717315),     # commenting this out makes slash commands available in DMs
-    help_class = CustomHelpCommand,
+    default_enabled_guilds = (833429143672717315, 914263704978219109),     # commenting this out makes slash commands available in DMs, uncommenting this is useful for testing since it instantly loads slash commands to the listed servers
+    #help_class = lightbulb.DefaultHelpCommand,
     logs = "INFO"
 )
 
 # Starts the bot.
 def setup() -> None:
     #bot.load_extensions_from("hikari_lightbulb_bot.commands")
-    bot.load_extensions("hikari_lightbulb_bot.commands.starttracking", "hikari_lightbulb_bot.commands.customhelp")
-    #bot.load_extensions("hikari_lightbulb_bot.commands.starttracking")
+    #bot.load_extensions("hikari_lightbulb_bot.commands.starttracking", "hikari_lightbulb_bot.commands.customhelp")
+    bot.load_extensions("hikari_lightbulb_bot.commands.starttracking")
     bot.run()
 
 # Called once the bot has started.
@@ -41,7 +41,7 @@ async def botDisconnected(event: hikari.StoppedEvent) -> None:
 # Register command to bot
 @bot.command
 # Convert function into command
-@lightbulb.command("ping", description = "The bot's ping")
+@lightbulb.command("ping", description="The bot's ping")
 # Define command's type
 @lightbulb.implements(lightbulb.SlashCommand)
 async def ping(ctx: lightbulb.Context) -> None:
