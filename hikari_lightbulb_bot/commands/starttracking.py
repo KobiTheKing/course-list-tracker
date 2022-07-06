@@ -8,14 +8,15 @@ plugin = lightbulb.Plugin("StartTrackingPlugin")
 @lightbulb.command("starttracking", description = "Recieve a DM from the bot to begin tracking courses.")
 @lightbulb.implements(lightbulb.SlashCommand)
 async def startTracking(ctx: lightbulb.Context) -> None:
+    #TODO: ADD EMBED HERE?
     await ctx.user.send(content = "Test message!")
     await ctx.respond("temp")
 
 
 # Extensions are hot-reloadable (can be loaded/unloaded while the bot is live)
 
-def load(bot):
+def load(bot) -> None:
     bot.add_plugin(plugin)
 
-def unload(bot):
+def unload(bot) -> None:
     bot.remove_plugin(plugin)

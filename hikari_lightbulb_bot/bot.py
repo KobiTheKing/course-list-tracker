@@ -8,7 +8,7 @@ from scraper import checkValidity
 from datamanager import trackCourse, untrackCourse
 import asyncio
 
-dotenv.load_dotenv()
+dotenv.load_dotenv()    # Load environment variables
 
 # Creates a bot instance
 bot = lightbulb.BotApp(
@@ -19,15 +19,15 @@ bot = lightbulb.BotApp(
     logs = "INFO"
 )
 
-# Starts the bot
-def setup():
+# Starts the bot.
+def setup() -> None:
     #bot.load_extensions_from("hikari_lightbulb_bot.commands")
     bot.load_extensions("hikari_lightbulb_bot.commands.starttracking", "hikari_lightbulb_bot.commands.customhelp")
     #bot.load_extensions("hikari_lightbulb_bot.commands.starttracking")
     bot.run()
 
-# Called once the bot has started
-# Starts the course tracker as a background task
+# Called once the bot has started.
+# Starts the course tracker as a background task.
 @bot.listen()
 async def StartTracker(event: hikari.StartedEvent) -> None:
     tracker.tracking = True
@@ -54,22 +54,23 @@ async def clear(ctx: lightbulb.Context) -> None:
 
     await ctx.respond("Channel contents cleared.")
 
-# Sends a direct message
-# param ids: a list of ids to send the message to
+# Sends a direct message to user(s).
+# param ids: a list of user ids to send the message to
 # param msgString: the contents of the message
-async def sendDM(ids, msgString):
-    for identification in ids:
+async def sendDM(ids: list, msgString: str) -> None:
+    for id in ids:
         try:
-            user = bot.cache.get_user(identification) or await bot.rest.fetch_user(identification)
+            user = await bot.rest.fetch_user(id) #Old: bot.cache.get_user(id) or await bot.rest.fetch_user(id)
             await user.send(content = msgString)
 
-            print(f"Sent Outbound Message: User: {identification}, MESSAGE: {msgString}")
+            print(f"Sent Outbound Message: User: {id}, MESSAGE: {msgString}")
         except Exception as e:
             print(f"ERROR: Failed to send outbound DM with exception: {e}")
 
 # Recieves a direct message from a user of the bot and parses to identify commands
 @bot.listen()
 async def recieveDM(event: hikari.DMMessageCreateEvent) -> None:
+    # Ignore the bot's own messages
     if event.is_bot:
         return
 
@@ -116,14 +117,8 @@ async def recieveDM(event: hikari.DMMessageCreateEvent) -> None:
                 await senderName.send(content = f"Error: CRN: {CRN} is invalid")
                 return
 
-        await senderName.send(content = f"Invalid command!")
+        await senderName.send(content = "Invalid command!")
         return
     else:
         await senderName.send(content = "Invalid command! Use '/' before commands.")
         return
-
-
-
-#if __name__ == "__main__":
-#    bot.load_extensions("commands.starttracking")
-#    bot.run()
