@@ -20,7 +20,7 @@ bot = lightbulb.BotApp(
 
 # Starts the bot.
 def setup() -> None:
-    bot.load_extensions("hikari_lightbulb_bot.commands.customhelp", "hikari_lightbulb_bot.commands.track")
+    bot.load_extensions("course_tracker.hikari_lightbulb_bot.commands.customhelp", "course_tracker.hikari_lightbulb_bot.commands.track")
     bot.run()
 
 # Called once the bot has started.
