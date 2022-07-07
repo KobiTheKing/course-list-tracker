@@ -1,4 +1,5 @@
 import lightbulb
+import hikari
 from course_tracker import scraper
 from course_tracker import datamanager
 
@@ -20,13 +21,23 @@ async def track(ctx: lightbulb.Context) -> None:
         if scraper.checkValidity(ctx.options.crn, ctx.options.subject):
             # Both CRN and subject are good
             datamanager.trackCourse(ctx.options.crn, ctx.options.subject, str(ctx.author.id))
-            await ctx.respond(content=f"Success: Course with CRN: {ctx.options.crn}, subject: {ctx.options.subject} now being tracked.")
+
+            await ctx.respond(content=hikari.Embed(
+                title="Success!",
+                description=f"Course with\n\nCRN: {ctx.options.crn}\nSubject: {ctx.options.subject}\nis now being tracked.",
+                color=hikari.Color(0x008000)))
         else:
             # The CRN is invalid but the subject is good
-            await ctx.respond(content=f"Error: CRN: {ctx.options.crn} is invalid!")
+            await ctx.respond(content=hikari.Embed(
+                title="Error:",
+                description=f"CRN: {ctx.options.crn} is invalid!",
+                color=hikari.Color(0xFF0000)))
     except Exception as e:
         # The subject is invalid
-        await ctx.respond(content = f"Error: subject: {ctx.options.subject} is invalid!")
+        await ctx.respond(content=hikari.Embed(
+            title="Error:",
+            description=f"Subject: {ctx.options.subject} is invalid!",
+            color=hikari.Color(0xFF0000)))
 
 # Extensions are hot-reloadable (can be loaded/unloaded while the bot is live)
 
