@@ -20,7 +20,7 @@ bot = lightbulb.BotApp(
 
 # Starts the bot.
 def setup() -> None:
-    bot.load_extensions("course_tracker.hikari_lightbulb_bot.commands.customhelp", "course_tracker.hikari_lightbulb_bot.commands.track")
+    bot.load_extensions("course_tracker.hikari_lightbulb_bot.commands.customhelp", "course_tracker.hikari_lightbulb_bot.commands.track", "course_tracker.hikari_lightbulb_bot.commands.untrack")
     bot.run()
 
 # Called once the bot has started.
@@ -56,59 +56,3 @@ async def sendDM(ids: list, msgString: str) -> None:
             print(f"Sent Outbound Message: User: {id}, MESSAGE: {msgString}")
         except Exception as e:
             print(f"ERROR: Failed to send outbound DM with exception: {e}")
-
-# Recieves a direct message from a user of the bot and parses to identify commands
-@bot.listen()
-async def recieveDM(event: hikari.DMMessageCreateEvent) -> None:
-    # Ignore the bot's own messages
-    if event.is_bot:
-        return
-
-    #Retrieve message info
-    senderName = event.author
-    senderID = event.author_id
-    senderMessage = event.content
-
-    print(f"Recieved Inbound Message: User: {senderName}, MESSAGE: {senderMessage}")
-
-    # Verify the message recieved is a command
-    if senderMessage[0] == "/":
-        if senderMessage.split()[0].lower() == "/track" and len(senderMessage.split()) == 3:
-            # Command: 'track <CRN> <subject>'
-            CRN = senderMessage.split()[1]
-            subject = senderMessage.split()[2]
-            print("CRN: " + CRN)
-            print("subject: " + subject)
-            print("senderMessage: " + senderMessage)
-            print("sendername" + str(senderName))
-
-            try:
-                if scraper.checkValidity(CRN, subject):
-                    # Both CRN and subject are good
-                    datamanager.trackCourse(CRN, subject, str(senderID))
-                    await senderName.send(content = f"Success: Course with CRN: {CRN}, subject: {subject} now being tracked.")
-                    return
-                else:
-                    # The CRN is invalid but the subject is good
-                    await senderName.send(content = f"Error: CRN: {CRN} is invalid!")
-                    return
-            except Exception as e:
-                # The subject is invalid
-                await senderName.send(content = f"Error: subject: {subject} is invalid!")
-                return
-        elif senderMessage.split()[0].lower() == "/untrack" and len(senderMessage.split()) == 2:
-            # Command: 'untrack <CRN>'
-            CRN = senderMessage.split()[1]
-
-            if datamanager.untrackCourse(CRN, str(senderID)):
-                await senderName.send(content = f"Success: Course with CRN: {CRN} no longer being tracked.")
-                return
-            else:
-                await senderName.send(content = f"Error: CRN: {CRN} is invalid")
-                return
-
-        await senderName.send(content = "Invalid command!")
-        return
-    else:
-        await senderName.send(content = "Invalid command! Use '/' before commands.")
-        return
