@@ -29,13 +29,13 @@ async def track(ctx: lightbulb.Context) -> None:
         else:
             # The CRN is invalid but the subject is good
             await ctx.respond(content=hikari.Embed(
-                title="Error:",
+                title="Error!",
                 description=f"CRN: {ctx.options.crn} is invalid!",
                 color=hikari.Color(0xFF0000)))
     except Exception as e:
         # The subject is invalid
         await ctx.respond(content=hikari.Embed(
-            title="Error:",
+            title="Error!",
             description=f"Subject: {ctx.options.subject} is invalid!",
             color=hikari.Color(0xFF0000)))
 
