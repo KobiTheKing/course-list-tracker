@@ -37,7 +37,7 @@ async def track() -> None:
                 elif course["last_seen_status"] == "NONE":
                     course["last_seen_status"] = "OPEN" if status else "CLOSED"
                     await bot.sendDM(course["tracked_by"], f"{course['crn']} is currently {'open' if status else 'closed'}.")
-            except Exception as e:
+            except Exception:
                 print(f"Error (tracker.py): Failed to check status of {course}.")
 
         datamanager.updateData(trackingData)

@@ -1,6 +1,7 @@
-from bs4 import BeautifulSoup
 import requests
 from requests.exceptions import RequestException
+
+from bs4 import BeautifulSoup
 
 # The base url for the WM Open Course List that can be added too
 BASE_URL = "https://courselist.wm.edu/courselist/courseinfo/searchresults?term_code=202310&term_subj=&attr=0&attr2=0&levl=0&status=0&ptrm=0&search=Search"
@@ -13,7 +14,7 @@ BASE_URL = "https://courselist.wm.edu/courselist/courseinfo/searchresults?term_c
 def checkStatus(CRN: str, subject: str) -> bool:
     try:
         soup = scrape(createURL(subject))
-    except requests.exceptions.RequestException as e:
+    except requests.exceptions.RequestException:
         raise RequestException
 
     # Retrieves all of the cells in the table as a list
@@ -41,7 +42,7 @@ def checkStatus(CRN: str, subject: str) -> bool:
 def checkValidity(CRN: str, subject: str) -> bool:
     try:
         soup = scrape(createURL(subject))
-    except requests.exceptions.RequestException as e:
+    except requests.exceptions.RequestException:
         raise RequestException
 
     # Retrieves all of the cells in the table as a list
@@ -73,7 +74,7 @@ def createURL(subject: str) -> str:
 def scrape(URL: str) -> BeautifulSoup:
     try:
         source = requests.get(URL, timeout = 10.000)
-    except requests.exceptions.RequestException as e:
+    except requests.exceptions.RequestException:
         raise RequestException
 
     soup = BeautifulSoup(source.text, "lxml")
