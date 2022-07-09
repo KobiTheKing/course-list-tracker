@@ -29,6 +29,8 @@ class Queue:
         self._header.next = node
         node.prev = self._header
 
+        self._size += 1
+
     # Remove a node from the end of the queue
     def dequeue(self) -> typing.Any:
         if self.size == 0:
@@ -37,6 +39,8 @@ class Queue:
         node = self._trailer.prev
         self._trailer.prev = self._trailer.prev.prev
         self._trailer.prev.next = self._trailer
+
+        self._size -= 1
 
         return node.val
 
