@@ -9,29 +9,34 @@ class Queue:
             self.val = val
 
     def __init__(self) -> None:
-        self.header = self._Node(None)
-        self.trailer = self._Node(None)
+        self._header = self._Node(None)
+        self._trailer = self._Node(None)
+        self._size = 0
 
-        self.header.next = self.trailer
-        self.trailer.prev = self.header
+        self._header.next = self._trailer
+        self._trailer.prev = self._header
+
+    # Returns the length of the queue not including the header and trailer
+    def __len__(self) -> None: 
+        return self._size
 
     # Add a node to the front of the queue
     def enqueue(self, value: typing.Any) -> None:
         node = self._Node(value)
 
-        self.header.next.prev = node
-        node.next = self.header.next
-        self.header.next = node
-        node.prev = self.header
+        self._header.next.prev = node
+        node.next = self._header.next
+        self._header.next = node
+        node.prev = self._header
 
     # Remove a node from the end of the queue
     def dequeue(self) -> typing.Any:
-        if self.header.next == self.trailer:
+        if self.size == 0:
             raise Empty
 
-        node = self.trailer.prev
-        self.trailer.prev = self.trailer.prev.prev
-        self.trailer.prev.next = self.trailer
+        node = self._trailer.prev
+        self._trailer.prev = self._trailer.prev.prev
+        self._trailer.prev.next = self._trailer
 
         return node.val
 
