@@ -1,7 +1,6 @@
 import lightbulb
 import hikari
-from course_tracker import scraper
-from course_tracker import datamanager
+from course_tracker import scraper, request, tracker
 
 # Plugins are structures that allow the grouping of multiple commands and listeners together.
 plugin = lightbulb.Plugin("Track Course", description="Track a new course.")
@@ -20,7 +19,7 @@ async def track(ctx: lightbulb.Context) -> None:
     try:
         if scraper.checkValidity(ctx.options.crn, ctx.options.subject):
             # Both CRN and subject are good
-            datamanager.trackCourse(ctx.options.crn, ctx.options.subject, str(ctx.author.id))
+            tracker.requestQueue.enqueue(request.CourseRequest(request.RequestType.TRACK, ctx.options.crn, ctx.options.subject, str(ctx.author.id)))
 
             await ctx.respond(content=hikari.Embed(
                 title="Success!",
@@ -33,6 +32,7 @@ async def track(ctx: lightbulb.Context) -> None:
                 description=f"CRN: {ctx.options.crn} is invalid!",
                 color=hikari.Color(0xFF0000)))
     except Exception as e:
+        print(e)
         # The subject is invalid
         await ctx.respond(content=hikari.Embed(
             title="Error!",

@@ -13,7 +13,7 @@ dotenv.load_dotenv()    # Load environment variables
 bot = lightbulb.BotApp(
     os.environ["DISCORD_BOT_TOKEN"],
     intents=hikari.Intents.ALL,
-    default_enabled_guilds=(833429143672717315, 914263704978219109),     # commenting this out makes slash commands available in DMs, uncommenting this is useful for testing since it instantly loads slash commands to the listed servers
+    #default_enabled_guilds=(833429143672717315, 914263704978219109),     # commenting this out makes slash commands available in DMs, uncommenting this is useful for testing since it instantly loads slash commands to the listed servers
     help_class=None,
     logs="INFO"    #DEBUG
 )

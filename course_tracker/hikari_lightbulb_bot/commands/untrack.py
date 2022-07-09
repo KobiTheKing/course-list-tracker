@@ -1,5 +1,8 @@
 import lightbulb
-from course_tracker import datamanager
+import hikari
+from course_tracker import request
+from course_tracker import tracker
+from course_tracker import scraper
 
 # Plugins are structures that allow the grouping of multiple commands and listeners together.
 plugin = lightbulb.Plugin("Untrack Course", description="Untrack a course.")
@@ -7,16 +10,35 @@ plugin = lightbulb.Plugin("Untrack Course", description="Untrack a course.")
 # Creates a command in the plugin
 @plugin.command
 @lightbulb.option("crn", description="The unique CRN for the course")
+@lightbulb.option("subject", description="The subject the course")
 @lightbulb.command("untrack", description="Untrack a course", ephemeral=True)
 @lightbulb.implements(lightbulb.SlashCommand)
 async def untrack(ctx: lightbulb.Context) -> None:
     print("CRN: " + ctx.options.crn)
+    print("subject: " + ctx.options.subject)
     print("sendername: " + str(ctx.author))
 
-    if datamanager.untrackCourse(ctx.options.crn, str(ctx.author.id)):
-        await ctx.respond(content=f"Success: Course with CRN: {ctx.options.crn} no longer being tracked.")
-    else:
-        await ctx.respond(content=f"Error: CRN: {ctx.options.crn} is invalid")
+    try:
+        if scraper.checkValidity(ctx.options.crn, ctx.options.subject):
+            # Both CRN and subject are good
+            tracker.requestQueue.enqueue(request.CourseRequest(request.RequestType.UNTRACK, ctx.options.crn, ctx.options.subject, str(ctx.author.id)))
+
+            await ctx.respond(content=hikari.Embed(
+                title="Success!",
+                description=f"Course with\n\nCRN: {ctx.options.crn}\nSubject: {ctx.options.subject}\nis no longer being tracked.",
+                color=hikari.Color(0x008000)))
+        else:
+            # The CRN is invalid but the subject is good
+            await ctx.respond(content=hikari.Embed(
+                title="Error!",
+                description=f"CRN: {ctx.options.crn} is invalid!",
+                color=hikari.Color(0xFF0000)))
+    except Exception as e:
+        # The subject is invalid
+        await ctx.respond(content=hikari.Embed(
+            title="Error!",
+            description=f"Subject: {ctx.options.subject} is invalid!",
+            color=hikari.Color(0xFF0000)))
     
 
 # Extensions are hot-reloadable (can be loaded/unloaded while the bot is live)
