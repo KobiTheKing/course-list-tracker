@@ -33,7 +33,7 @@ class Queue:
 
     # Remove a node from the end of the queue
     def dequeue(self) -> typing.Any:
-        if self.size == 0:
+        if self._size == 0:
             raise Empty
 
         node = self._trailer.prev
