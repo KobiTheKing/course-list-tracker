@@ -1,6 +1,9 @@
 import lightbulb
 import hikari
-from course_tracker import scraper, request, tracker
+
+from course_tracker import scraper
+from course_tracker import request
+from course_tracker import tracker
 
 # Plugins are structures that allow the grouping of multiple commands and listeners together.
 plugin = lightbulb.Plugin("Track Course", description="Track a new course.")

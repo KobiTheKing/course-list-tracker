@@ -1,9 +1,10 @@
+import asyncio
+
 from course_tracker import datamanager
 from course_tracker import scraper
 from course_tracker import queue
 from course_tracker import request
 from course_tracker.hikari_lightbulb_bot import bot
-import asyncio
 
 # Controls the while loop that keeps the tracker running continuously
 tracking = False

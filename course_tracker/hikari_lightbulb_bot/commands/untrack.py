@@ -1,5 +1,6 @@
 import lightbulb
 import hikari
+
 from course_tracker import request
 from course_tracker import tracker
 from course_tracker import scraper

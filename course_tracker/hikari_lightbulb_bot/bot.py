@@ -1,11 +1,11 @@
 import os
 import dotenv
+import asyncio
+
 import hikari
 import lightbulb
+
 from course_tracker import tracker
-from course_tracker import scraper
-from course_tracker import datamanager
-import asyncio
 
 dotenv.load_dotenv()    # Load environment variables
 
