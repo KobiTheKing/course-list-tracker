@@ -41,8 +41,7 @@ def trackCourse(CRN: str, subject: str, id: str) -> None:
 # the entire course is removed.
 # param CRN: the unique identifier for the course
 # param identification: identification of the user requesting to track the course
-# return: True for success, false if one of the arguments is invalid
-def untrackCourse(CRN: str, identification: str) -> bool:
+def untrackCourse(CRN: str, identification: str) -> None:
     trackingData = getData()
 
     for course in trackingData["Courses"]:
@@ -50,12 +49,10 @@ def untrackCourse(CRN: str, identification: str) -> bool:
             if len(course["tracked_by"]) == 1 and course["tracked_by"][0] == identification:
                 # If the course is only being tracked by one person and it is the person specified by the discord user id, delete the whole course.
                 trackingData["Courses"].remove(course)
-                updateData(trackingData)
-                return True
+                break
             elif identification in course["tracked_by"]:
                 # If other people also track the course, only delete the specified id from the list of people tracking.
                 course["tracked_by"].remove(identification)
-                updateData(trackingData)
-                return True
+                break
 
-    return False
+    updateData(trackingData)
