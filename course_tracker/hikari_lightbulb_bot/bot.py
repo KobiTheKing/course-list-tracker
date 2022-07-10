@@ -20,8 +20,12 @@ bot = lightbulb.BotApp(
 
 # Starts the bot.
 def setup() -> None:
-    bot.load_extensions("course_tracker.hikari_lightbulb_bot.commands.customhelp", "course_tracker.hikari_lightbulb_bot.commands.track", "course_tracker.hikari_lightbulb_bot.commands.untrack")
-    bot.run()
+    bot.load_extensions("course_tracker.hikari_lightbulb_bot.commands.customhelp", "course_tracker.hikari_lightbulb_bot.commands.track", "course_tracker.hikari_lightbulb_bot.commands.untrack", "course_tracker.hikari_lightbulb_bot.commands.shutdown")
+    bot.run(activity=hikari.Activity(name="the W&M Course List", type=hikari.ActivityType.WATCHING))
+
+# Shuts down the bot.
+async def shutdown() -> None:
+    await bot.close()
 
 # Called once the bot has started.
 # Starts the course tracker as a background task.
@@ -36,13 +40,13 @@ async def botDisconnected(event: hikari.StoppedEvent) -> None:
     print("The bot has disconnected from Discord!")
 
 # Register command to bot
-@bot.command
+#@bot.command
 # Convert function into command
-@lightbulb.command("ping", description="The bot's ping")
+#@lightbulb.command("ping", description="The bot's ping")
 # Define command's type
-@lightbulb.implements(lightbulb.SlashCommand)
-async def ping(ctx: lightbulb.Context) -> None:
-    await ctx.respond(f"Pong! Latency: {bot.heartbeat_latency*1000:.2f}ms")
+#@lightbulb.implements(lightbulb.SlashCommand)
+#async def ping(ctx: lightbulb.Context) -> None:
+#    await ctx.respond(f"Pong! Latency: {bot.heartbeat_latency*1000:.2f}ms")
 
 # Sends a direct message to user(s).
 # param ids: a list of user ids to send the message to

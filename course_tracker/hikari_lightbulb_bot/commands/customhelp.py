@@ -1,11 +1,14 @@
 import lightbulb
 import hikari
 
+from course_tracker.hikari_lightbulb_bot.commands.shutdown import check_not_shutting_down
+
 # Plugins are structures that allow the grouping of multiple commands and listeners together.
 plugin = lightbulb.Plugin("Help Command", description="Information on the how to use the bot.")
 
 # Creates a command in the plugin
 @plugin.command
+@lightbulb.add_checks(check_not_shutting_down)
 @lightbulb.command("help", description="Gets help for bot commands")
 @lightbulb.implements(lightbulb.SlashCommand)
 async def custom_help(ctx: lightbulb.Context) -> None:

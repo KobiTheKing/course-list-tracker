@@ -1,4 +1,5 @@
 import asyncio
+import sys
 
 from course_tracker import datamanager
 from course_tracker import scraper
@@ -47,15 +48,26 @@ async def track() -> None:
         # Phase 2: Complete all requests that came in while Phase 1 was happening. Requests can be to track a course or untrack a course.
         print("tracker: Start phase 2...")
 
-        for _ in range(len(requestQueue)):
-            rqst = requestQueue.dequeue()
-            
-            if rqst.type == request.RequestType.TRACK:
-                datamanager.trackCourse(rqst.crn, rqst.subject, rqst.authorID)
-                print("tracker: Handled request to track a course.")
-            elif rqst.type == request.RequestType.UNTRACK:
-                datamanager.untrackCourse(rqst.crn, rqst.authorID)
-                print("tracker: Handled request to untrack a course.")
+        fulfillRequests()
 
         print("tracker: End of tracking loop...")
         await asyncio.sleep(15)
+
+    # If we exit the tracking loop, initiate a safe shutdown of the bot by fulfilling any remaining requests and then shutting down.
+    fulfillRequests()
+
+    await bot.shutdown()
+
+    sys.exit()
+
+# Fulfill all current requests
+def fulfillRequests() -> None:
+    for _ in range(len(requestQueue)):
+        rqst = requestQueue.dequeue()
+        
+        if rqst.type == request.RequestType.TRACK:
+            datamanager.trackCourse(rqst.crn, rqst.subject, rqst.authorID)
+            print("tracker: Handled request to track a course.")
+        elif rqst.type == request.RequestType.UNTRACK:
+            datamanager.untrackCourse(rqst.crn, rqst.authorID)
+            print("tracker: Handled request to untrack a course.")

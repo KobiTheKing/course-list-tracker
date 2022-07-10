@@ -4,12 +4,14 @@ import hikari
 from course_tracker import scraper
 from course_tracker import request
 from course_tracker import tracker
+from course_tracker.hikari_lightbulb_bot.commands.shutdown import check_not_shutting_down
 
 # Plugins are structures that allow the grouping of multiple commands and listeners together.
 plugin = lightbulb.Plugin("Track Course", description="Track a new course.")
 
 # Creates a command in the plugin
 @plugin.command
+@lightbulb.add_checks(check_not_shutting_down)
 @lightbulb.option("crn", description="The unique CRN for the course")
 @lightbulb.option("subject", description="The subject the course")
 @lightbulb.command("track", description="Track a new course", ephemeral=True)
