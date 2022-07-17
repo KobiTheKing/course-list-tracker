@@ -22,9 +22,9 @@ async def untrack(ctx: lightbulb.Context) -> None:
     print("sendername: " + str(ctx.author))
 
     try:
-        if scraper.checkValidity(ctx.options.crn, ctx.options.subject):
+        if scraper.checkValidity(int(ctx.options.crn), str(ctx.options.subject)):
             # Both CRN and subject are good
-            tracker.requestQueue.enqueue(request.CourseRequest(request.RequestType.UNTRACK, ctx.options.crn, ctx.options.subject, str(ctx.author.id)))
+            tracker.requestQueue.enqueue(request.CourseRequest(request.RequestType.UNTRACK, int(ctx.options.crn), str(ctx.options.subject), int(ctx.author.id), str(ctx.author)))
 
             await ctx.respond(content=hikari.Embed(
                 title="Success!",

@@ -11,7 +11,7 @@ BASE_URL = "https://courselist.wm.edu/courselist/courseinfo/searchresults?term_c
 # param subject: the subject to check for the course in
 # return: True if open, false if closed
 # raise: RequestException if the URL does not exist or there is a problem retrieving it OR the CRN cannot be found
-def checkStatus(CRN: str, subject: str) -> bool:
+def checkStatus(CRN: int, subject: str) -> bool:
     try:
         soup = scrape(createURL(subject))
     except requests.exceptions.RequestException:
@@ -24,7 +24,7 @@ def checkStatus(CRN: str, subject: str) -> bool:
     for index, cell in enumerate(cells):
         # If the cell being looked at contains a CRN
         if index % 11 == 0:
-            if cell.text.strip() == CRN:
+            if cell.text.strip() == str(CRN):
                 # Checks the cell that contains the status for this specific CRN
                 if cells[index + 10].text.strip() == "OPEN":
                     return True
@@ -39,7 +39,7 @@ def checkStatus(CRN: str, subject: str) -> bool:
 # param subject: the subject to check the existence of
 # return: True if the CRN and URL exist, false if the URL exists but the CRN does not
 # raise: RequestException if the URL does not exist or there is a problem retrieving it
-def checkValidity(CRN: str, subject: str) -> bool:
+def checkValidity(CRN: int, subject: str) -> bool:
     try:
         soup = scrape(createURL(subject))
     except requests.exceptions.RequestException:
@@ -52,7 +52,7 @@ def checkValidity(CRN: str, subject: str) -> bool:
     for index, cell in enumerate(cells):
         # If the cell being looked at contains a CRN
         if index % 11 == 0:
-            if cell.text.strip() == CRN:
+            if cell.text.strip() == str(CRN):
                 return True
 
     # If we go through entire loop and can't find the CRN

@@ -1,7 +1,7 @@
 import asyncio
 import sys
 
-from course_tracker import datamanager
+from course_tracker import database
 from course_tracker import scraper
 from course_tracker import queue
 from course_tracker import request
@@ -22,26 +22,27 @@ async def track() -> None:
         # Phase 1: Check the status of all tracked courses, notify users of any changes.
         print("tracker: Start phase 1...")
 
-        trackingData = datamanager.getData()
+        trackingData = database.getCourses()
+        coursesToUpdate = []
 
-        for course in trackingData["Courses"]:
+        for course in trackingData:
             try:
-                status = scraper.checkStatus(course["crn"], course["subject"])
+                status = scraper.checkStatus(course[0], course[1])
 
                 # Situations where users tracking the course should be notified (a change in status)
-                if not status and course["last_seen_status"] == "OPEN":
-                    course["last_seen_status"] = "CLOSED"
-                    await bot.sendDM(course["tracked_by"], f"{course['crn']} is now closed!")
-                elif status and course["last_seen_status"] == "CLOSED":
-                    course["last_seen_status"] = "OPEN"
-                    await bot.sendDM(course["tracked_by"], f"{course['crn']} is now open!")
-                elif course["last_seen_status"] == "NONE":
-                    course["last_seen_status"] = "OPEN" if status else "CLOSED"
-                    await bot.sendDM(course["tracked_by"], f"{course['crn']} is currently {'open' if status else 'closed'}.")
+                if not status and course[2] == "OPEN":
+                    coursesToUpdate.append((course[0], "CLOSED"))
+                    await bot.sendDM(database.courseTrackedBy(course[0]), f"{course[0]} is now closed!")
+                elif status and course[2] == "CLOSED":
+                    coursesToUpdate.append((course[0], "OPEN"))
+                    await bot.sendDM(database.courseTrackedBy(course[0]), f"{course[0]} is now open!")
+                elif course[2] == "NONE":
+                    coursesToUpdate.append((course[0], "OPEN" if status else "CLOSED"))
+                    await bot.sendDM(database.courseTrackedBy(course[0]), f"{course[0]} is currently {'open' if status else 'closed'}.")
             except Exception:
                 print(f"Error (tracker.py): Failed to check status of {course}.")
 
-        datamanager.updateData(trackingData)
+        database.updateCourses(coursesToUpdate)
 
         await asyncio.sleep(15)
 
@@ -66,8 +67,8 @@ def fulfillRequests() -> None:
         rqst = requestQueue.dequeue()
         
         if rqst.type == request.RequestType.TRACK:
-            datamanager.trackCourse(rqst.crn, rqst.subject, rqst.authorID)
+            database.trackCourse(rqst.crn, rqst.subject, rqst.userID, rqst.username)
             print("tracker: Handled request to track a course.")
         elif rqst.type == request.RequestType.UNTRACK:
-            datamanager.untrackCourse(rqst.crn, rqst.authorID)
+            database.untrackCourse(rqst.crn, rqst.userID)
             print("tracker: Handled request to untrack a course.")

@@ -7,8 +7,9 @@ class RequestType(Enum):
 
 # Represents a request to manipulate tracking.json
 class CourseRequest:
-    def __init__(self, type: RequestType, crn: str, subject: str, authorID: str) -> None:
+    def __init__(self, type: RequestType, crn: int, subject: str, userID: int, username: str) -> None:
         self.type = type
         self.crn = crn
         self.subject = subject
-        self.authorID = authorID
+        self.userID = userID
+        self.username = username
