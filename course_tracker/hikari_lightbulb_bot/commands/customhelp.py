@@ -12,6 +12,8 @@ plugin = lightbulb.Plugin("Help Command", description="Information on the how to
 @lightbulb.command("help", description="Gets help for bot commands")
 @lightbulb.implements(lightbulb.SlashCommand)
 async def custom_help(ctx: lightbulb.Context) -> None:
+    """Display a custom help message showing how to interact with the bot."""
+
     embedHelp = (
         hikari.Embed(
             title="W&M Course Tracker", 

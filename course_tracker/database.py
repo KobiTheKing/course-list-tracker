@@ -1,3 +1,5 @@
+"""Controls all tasks that interact with the database."""
+
 import os
 import dotenv
 import datetime
@@ -14,8 +16,13 @@ credentials = {
     "port": os.environ["PORT_ID"]
 }
 
-# Retrieves all of the courses currently being tracked.
-def getCourses() -> list:
+def get_courses() -> list:
+    """Retrieve all of the courses currently being tracked.
+
+    Returns:
+        A list of the courses.
+    """
+
     try:
         with psycopg2.connect(**credentials) as conn:
             with conn.cursor() as cur:
@@ -27,9 +34,15 @@ def getCourses() -> list:
     finally:
         conn.close()
 
-# Update a list of courses with a specific status.
-# List comes in the form of [(crn, status), (crn, status), ...]
-def updateCourses(courses: list) -> None:
+def update_courses(courses: list) -> None:
+    """Update a list of courses with their current status.
+    
+    List comes in the form of [(crn, status), (crn, status), ...]
+
+    Args:
+        courses: The list of courses.
+    """
+
     try:
         with psycopg2.connect(**credentials) as conn:
             with conn.cursor() as cur:
@@ -40,8 +53,13 @@ def updateCourses(courses: list) -> None:
     finally:
         conn.close()
 
-# Returns a list of all users who are tracking the given course.
-def courseTrackedBy(CRN: int) -> list:
+def course_tracked_by(CRN: int) -> list:
+    """Return a list of all users who are tracking a given course.
+    
+    Args:
+        CRN: The unique identifier of the course.
+    """
+
     try:
         with psycopg2.connect(**credentials) as conn:
             with conn.cursor() as cur:
@@ -52,13 +70,19 @@ def courseTrackedBy(CRN: int) -> list:
     finally:
         conn.close()
 
-# Called via the discord command 'track <CRN> <subject>'. Adds a new user entry if this is the first course they are tracking. Adds a new course entry if this is the first person
-# to track this course. Adds a tracking entry.
-# param CRN: the unique identifier for the course
-# param subject: the subject of the course
-# param identification: identification of the user requesting to track the course
-# param name: name of user
-def trackCourse(CRN: int, subject: str, identification: int, name: str) -> None:
+def track_course(CRN: int, subject: str, identification: int, name: str) -> None:
+    """Track a course.
+
+    Called via the discord command 'track <CRN> <subject>'. Adds a new user entry if this is the first course they are tracking.
+    Adds a new course entry if this is the first person to track this course. Also adds a tracking entry.
+
+    Args:
+        CRN: The unique identifier for the course.
+        subject: The subject of the course.
+        identification: Identification of the user requesting to track the course.
+        name: Name of user.
+    """
+
     try:
         with psycopg2.connect(**credentials) as conn:
             with conn.cursor() as cur:
@@ -86,11 +110,17 @@ def trackCourse(CRN: int, subject: str, identification: int, name: str) -> None:
     finally:
         conn.close()
 
-# Called via the discord command 'untrack <CRN>'. Removes a tracking entry corresponding to the person and course. If they were the only person tracking said course, then
-# the entire course is removed.
-# param CRN: the unique identifier for the course
-# param identification: identification of the user requesting to track the course
-def untrackCourse(CRN: int, identification: int) -> None:
+def untrack_course(CRN: int, identification: int) -> None:
+    """Untrack a course.
+
+    Called via the discord command 'untrack <CRN>'. Removes a tracking entry corresponding to the person and course.
+    If they were the only person tracking said course, then the entire course is removed.
+
+    Args:
+        CRN: The unique identifier for the course.
+        identification: Identification of the user requesting to track the course.
+    """
+
     try:
         with psycopg2.connect(**credentials) as conn:
             with conn.cursor() as cur:

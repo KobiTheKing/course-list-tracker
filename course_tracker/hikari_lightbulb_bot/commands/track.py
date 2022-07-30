@@ -17,12 +17,17 @@ plugin = lightbulb.Plugin("Track Course", description="Track a new course.")
 @lightbulb.command("track", description="Track a new course", ephemeral=True)
 @lightbulb.implements(lightbulb.SlashCommand)
 async def track(ctx: lightbulb.Context) -> None:
+    """Track a course.
+
+    Called via the discord command 'track <CRN> <subject>'.
+    """
+
     print("CRN: " + ctx.options.crn)
     print("subject: " + ctx.options.subject)
     print("sendername: " + str(ctx.author))
 
     try:
-        if scraper.checkValidity(int(ctx.options.crn), str(ctx.options.subject)):
+        if scraper.check_validity(int(ctx.options.crn), str(ctx.options.subject)):
             # Both CRN and subject are good
             tracker.requestQueue.enqueue(request.CourseRequest(request.RequestType.TRACK, int(ctx.options.crn), str(ctx.options.subject), int(ctx.author.id), str(ctx.author)))
 

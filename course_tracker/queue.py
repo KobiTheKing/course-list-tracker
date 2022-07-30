@@ -1,8 +1,11 @@
 import typing
 
-# Basic implementation of a queue to be used to handle incoming requests from the bot commands.
 class Queue:
+    """Basic implementation of a queue to be used to handle incoming requests from the bot commands."""
+
     class _Node:
+        """Represents an individual element of the Queue."""
+
         def __init__(self, val: typing.Any) -> None:
             self.next = None
             self.prev = None
@@ -16,12 +19,18 @@ class Queue:
         self._header.next = self._trailer
         self._trailer.prev = self._header
 
-    # Returns the length of the queue not including the header and trailer
-    def __len__(self) -> None: 
+    def __len__(self) -> None:
+        """Return the length of the queue."""
+
         return self._size
 
-    # Add a node to the front of the queue
     def enqueue(self, value: typing.Any) -> None:
+        """Add an item to the front of the queue.
+        
+        Args:
+            value: The item to be added to the queue.
+        """
+
         node = self._Node(value)
 
         self._header.next.prev = node
@@ -31,8 +40,12 @@ class Queue:
 
         self._size += 1
 
-    # Remove a node from the end of the queue
     def dequeue(self) -> typing.Any:
+        """Remove an item from the end of the queue.
+        
+        Returns:
+            The item that was removed.
+        """
         if self._size == 0:
             raise Empty
 
@@ -44,6 +57,6 @@ class Queue:
 
         return node.val
 
-# Custom exception for when a queue is empty
 class Empty(Exception):
+    """Custom exception representing when a queue is empty."""
     pass

@@ -17,12 +17,17 @@ plugin = lightbulb.Plugin("Untrack Course", description="Untrack a course.")
 @lightbulb.command("untrack", description="Untrack a course", ephemeral=True)
 @lightbulb.implements(lightbulb.SlashCommand)
 async def untrack(ctx: lightbulb.Context) -> None:
+    """Untrack a course.
+    
+    Called via the discord command 'untrack <CRN>'.
+    """
+
     print("CRN: " + ctx.options.crn)
     print("subject: " + ctx.options.subject)
     print("sendername: " + str(ctx.author))
 
     try:
-        if scraper.checkValidity(int(ctx.options.crn), str(ctx.options.subject)):
+        if scraper.check_validity(int(ctx.options.crn), str(ctx.options.subject)):
             # Both CRN and subject are good
             tracker.requestQueue.enqueue(request.CourseRequest(request.RequestType.UNTRACK, int(ctx.options.crn), str(ctx.options.subject), int(ctx.author.id), str(ctx.author)))
 

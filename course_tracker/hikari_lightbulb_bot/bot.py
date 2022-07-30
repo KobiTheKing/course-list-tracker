@@ -1,3 +1,5 @@
+"""Controls core functionality of the Discord Bot."""
+
 import os
 import dotenv
 import asyncio
@@ -18,40 +20,41 @@ bot = lightbulb.BotApp(
     logs="INFO"    #DEBUG
 )
 
-# Starts the bot.
 def setup() -> None:
+    """Startup the bot."""
+
     bot.load_extensions("course_tracker.hikari_lightbulb_bot.commands.customhelp", "course_tracker.hikari_lightbulb_bot.commands.track", "course_tracker.hikari_lightbulb_bot.commands.untrack", "course_tracker.hikari_lightbulb_bot.commands.shutdown")
     bot.run(activity=hikari.Activity(name="the W&M Course List", type=hikari.ActivityType.WATCHING))
 
-# Shuts down the bot.
 async def shutdown() -> None:
+    """Shutdown the bot."""
+
     await bot.close()
 
-# Called once the bot has started.
-# Starts the course tracker as a background task.
 @bot.listen()
-async def startTracker(event: hikari.StartedEvent) -> None:
+async def start_tracker(event: hikari.StartedEvent) -> None:
+    """Called once the bot has started.
+    
+    Starts the course tracker as a background task.
+    """
+
     tracker.tracking = True
     asyncio.create_task(tracker.track())
 
-# Called once the bot has disconnected from Discord.
 @bot.listen()
 async def botDisconnected(event: hikari.StoppedEvent) -> None:
+    """Called once the bot has disconnected from Discord."""
+
     print("The bot has disconnected from Discord!")
 
-# Register command to bot
-#@bot.command
-# Convert function into command
-#@lightbulb.command("ping", description="The bot's ping")
-# Define command's type
-#@lightbulb.implements(lightbulb.SlashCommand)
-#async def ping(ctx: lightbulb.Context) -> None:
-#    await ctx.respond(f"Pong! Latency: {bot.heartbeat_latency*1000:.2f}ms")
+async def send_DM(ids: list, msgString: str) -> None:
+    """Send a direct message to user(s).
+    
+    Args:
+        ids: A list of the user ids.
+        msgString: The contents of the message.
+    """
 
-# Sends a direct message to user(s).
-# param ids: a list of user ids to send the message to
-# param msgString: the contents of the message
-async def sendDM(ids: list, msgString: str) -> None:
     for id in ids:
         try:
             user = await bot.rest.fetch_user(id) #Old: bot.cache.get_user(id) or await bot.rest.fetch_user(id)
