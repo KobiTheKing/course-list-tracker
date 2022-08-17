@@ -4,6 +4,7 @@ import hikari
 from course_tracker import request
 from course_tracker import tracker
 from course_tracker import scraper
+from course_tracker import database
 from course_tracker.hikari_lightbulb_bot.commands.shutdown import check_not_shutting_down
 
 # Plugins are structures that allow the grouping of multiple commands and listeners together.
@@ -28,6 +29,14 @@ async def untrack(ctx: lightbulb.Context) -> None:
 
     try:
         if scraper.check_validity(int(ctx.options.crn), str(ctx.options.subject)):
+            if int(ctx.author.id) not in database.course_tracked_by(int(ctx.options.crn)):
+                # The user is not tracking this course
+                await ctx.respond(content=hikari.Embed(
+                    title="Error!",
+                    description=f"You are not tracking this course!",
+                    color=hikari.Color(0xFF0000)))
+                return
+
             # Both CRN and subject are good
             tracker.requestQueue.enqueue(request.CourseRequest(request.RequestType.UNTRACK, int(ctx.options.crn), str(ctx.options.subject), int(ctx.author.id), str(ctx.author)))
 
