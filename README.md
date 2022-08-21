@@ -1,8 +1,11 @@
-# course-list-tracker
+# W&M Open Course List Tracker
 
-This program web scrapes William and Mary's Open Course List Website (https://courselist.wm.edu/courselist/). It allows users to track the Open/Closed status of specific courses. Courses are tracked via SMS messages using the Twilio API.
+A course tracker and status change notifier for the [W&M Open Course List](https://courselist.wm.edu/courselist/). Utlizing the Discord API, webscraping, and PostgreSQL, users can track courses for the upcoming/current add/drop periods and will be notified whenever a course opens or closes.
 
-## SMS Commands
+## Discord Commands
 
-- Track a new course: 'track {CRN} {subject}'
-- Untrack a course: 'untrack {CRN}'
+Command usage for the Discord bot.
+
+- Get helpful information on how to use the bot: '/help'
+- Track a new course: '/track {subject} {CRN}'
+- Untrack a course: '/untrack {subject} {CRN}'
