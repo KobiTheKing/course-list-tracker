@@ -23,7 +23,7 @@ pure25519==0.0.1
 PyJWT==2.4.0
 python-dotenv==0.19.2
 pytz==2021.3
-requests==2.26.0
+requests==2.31.0
 soupsieve==2.3.1
 twilio==7.4.0
 urllib3==1.26.7
